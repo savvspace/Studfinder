@@ -527,10 +527,16 @@
       const header = document.getElementById('siteHeader');
       const hero   = document.getElementById('top');
 
-      let textState = null; // only swap the logo when the state actually changes
+      let textState = null;
+      let scrolled  = false; // hysteresis, so scroll jitter cannot flip the wordmark
       const updateHeader = () => {
         if (!header) return;
-        const past = window.scrollY > 24 || (hero && hero.getBoundingClientRect().bottom < 90);
+        const y = window.scrollY;
+        const heroPast = hero && hero.getBoundingClientRect().bottom < 90;
+        // Engage at 80px, release at 20px. A single threshold meant tiny
+        // scroll movements near the top flipped the logo back and forth.
+        scrolled = heroPast || (scrolled ? y > 20 : y > 80);
+        const past = scrolled;
         header.classList.toggle('scrolled', past);
         const textImg = document.getElementById('siteTextImg');
         const urls = window.__sfTextUrls;

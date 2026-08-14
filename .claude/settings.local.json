@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(python3 -c ' *)"
+      "Bash(python3 -c ' *)",
+      "Bash(curl -s --max-time 15 https://studfinder-zeta.vercel.app/index.html)"
     ]
   }
 }
