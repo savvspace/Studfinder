@@ -373,13 +373,15 @@
       const header = document.getElementById('siteHeader');
       const hero   = document.getElementById('heroTop');
 
+      let textState = null; // only swap the logo when the state actually changes
       const updateHeader = () => {
         if (!header) return;
         const past = window.scrollY > 24 || (hero && hero.getBoundingClientRect().bottom < 90);
         header.classList.toggle('scrolled', past);
         const textImg = document.getElementById('siteTextImg');
         const urls = window.__sfTextUrls;
-        if (textImg && urls && urls.white) {
+        if (textImg && urls && urls.white && textState !== past) {
+          textState = past;
           textImg.src = past ? urls.mixed : urls.white;
         }
       };
