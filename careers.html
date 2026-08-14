@@ -159,6 +159,13 @@
       margin-top: 8px;
     }
     .btn-submit:hover { opacity: .88; }
+    .btn-submit[disabled] { opacity: .55; cursor: default; }
+
+    /* Inline submit feedback */
+    .form-status { margin: 18px 0 0; font-size: .9rem; line-height: 1.6; min-height: 1.2em; }
+    .form-status.is-ok    { color: var(--stone); }
+    .form-status.is-error { color: #E8A0A0; }
+    .form-status a { color: inherit; text-decoration: underline; }
 
     /* ── Site Footer ── */
     .site-footer { background: #111; padding: 64px 0 0; }
@@ -260,7 +267,8 @@
   <!-- ── Application Form ── -->
   <div class="form-section">
     <h3 class="form-section-heading">Apply Now</h3>
-    <form action="mailto:info@studfindersb.com" method="post" enctype="text/plain">
+    <form id="careersForm" action="https://formspree.io/f/xaewbogo" method="POST" enctype="multipart/form-data">
+      <input type="hidden" name="_subject" value="New job application — studfindersb.com" />
 
       <div class="form-row-2">
         <div class="form-field">
@@ -324,6 +332,7 @@
       </div>
 
       <button type="submit" class="btn-submit">Submit Application</button>
+      <p id="careersStatus" class="form-status" role="status" aria-live="polite"></p>
     </form>
   </div>
 
@@ -379,6 +388,49 @@
     let textState=null,scrolled=false; // hysteresis, and only swap when the state changes
     const upd=()=>{const y=window.scrollY,hp=hero&&hero.getBoundingClientRect().bottom<90;scrolled=hp||(scrolled?y>20:y>80);const p=scrolled;hdr.classList.toggle('scrolled',p);const t=document.getElementById('siteTextImg'),u=window.__sfTextUrls;if(t&&u&&u.white&&textState!==p){textState=p;t.src=p?u.mixed:u.white;}};
     upd();window.addEventListener('scroll',upd,{passive:true});window.addEventListener('resize',upd);
+
+    // ── Application submission ──
+    // Posts to Formspree in the background (multipart, so the résumé is
+    // included) and keeps the applicant on the page.
+    (function () {
+      const form   = document.getElementById('careersForm');
+      const status = document.getElementById('careersStatus');
+      if (!form || !status) return;
+      const button = form.querySelector('button[type="submit"]');
+      const FALLBACK = 'Something went wrong sending your application. Please email us directly at <a href="mailto:info@studfindersb.com">info@studfindersb.com</a>.';
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        status.className = 'form-status';
+        status.textContent = 'Sending your application…';
+        button.disabled = true;
+
+        try {
+          const res = await fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: { Accept: 'application/json' },
+          });
+          if (res.ok) {
+            form.reset();
+            document.getElementById('file-name').textContent = '';
+            status.className = 'form-status is-ok';
+            status.textContent = 'Thank you — your application has been sent. We’ll be in touch.';
+          } else {
+            const data = await res.json().catch(() => null);
+            status.className = 'form-status is-error';
+            status.innerHTML = (data && data.errors)
+              ? data.errors.map(x => x.message).join(', ')
+              : FALLBACK;
+          }
+        } catch {
+          status.className = 'form-status is-error';
+          status.innerHTML = FALLBACK;
+        } finally {
+          button.disabled = false;
+        }
+      });
+    })();
   </script>
 </body>
 </html>
