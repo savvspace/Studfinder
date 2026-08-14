@@ -128,7 +128,8 @@
         position: relative;
         left: 50%;
         width: 100vw;
-        margin: 56px 0 56px -50vw;
+        /* main's gap-16 adds another 64px, landing on 160px of black each side */
+        margin: 96px 0 96px -50vw;
         height: 56vh;
         min-height: 340px;
         overflow: hidden;
@@ -148,7 +149,7 @@
       .proj-card { flex: 0 0 calc(50% - 0.5rem); }
 
       @media (max-width: 768px) {
-        .photo-band { height: 40vh; min-height: 240px; margin-top: 36px; margin-bottom: 36px; }
+        .photo-band { height: 40vh; min-height: 240px; margin-top: 64px; margin-bottom: 64px; }
         .proj-card { flex: 0 0 100%; }
       }
 
