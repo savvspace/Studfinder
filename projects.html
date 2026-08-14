@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projects — Stud Finder Construction</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --charcoal:   #2D2D2D;
+        --stone:      #B8AEA1;
+        --warm-white: #F7F5F2;
+        --panel:      #363636;
+        --muted:      #B8AEA1;
+        --line:       rgba(184, 174, 161, 0.18);
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; overflow-x: hidden; }
+      body { margin: 0; font-family: 'Raleway', sans-serif; background: #000; color: var(--warm-white); overflow-x: hidden; }
+      h1,h2,h3,h4 { font-family: 'Montserrat', sans-serif; }
+
+      /* ── Header ── */
+      header {
+        transition: background 240ms ease, box-shadow 240ms ease;
+        background: transparent;
+      }
+      header.scrolled {
+        background: #000;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.40);
+      }
+      .nav-link { color: #F7F5F2; transition: color 240ms ease; }
+      header.scrolled .nav-link { color: var(--stone); }
+      .nav-link:hover { color: var(--stone) !important; }
+      header.scrolled .nav-link:hover { color: #F7F5F2 !important; }
+      .nav-contact {
+        color: #F7F5F2;
+        border: 1px solid rgba(247,245,242,0.55);
+        padding: 8px 20px;
+        border-radius: 4px;
+        transition: color 240ms ease, border-color 240ms ease, background 160ms ease;
+      }
+      header.scrolled .nav-contact { color: var(--stone); border-color: var(--stone); }
+      .nav-contact:hover { background: var(--stone); border-color: var(--stone); color: var(--charcoal) !important; }
+
+      /* ── Hero ── */
+      .hero-section {
+        width: 100vw;
+        height: 55vh;
+        position: relative;
+        overflow: hidden;
+      }
+      .hero-bg {
+        width: 100%;
+        height: 100%;
+        background-image:
+          linear-gradient(to bottom, rgba(0,0,0,0.10) 0%, rgba(0,0,0,0.55) 100%),
+          url('Brand_Assets/Brand/Red Rose/_Lead.JPG');
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        align-items: flex-end;
+        padding: 0 0 60px 64px;
+      }
+
+      /* ── Project cards grid ── */
+      .projects-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 80px 28px 100px;
+      }
+      .project-card {
+        position: relative;
+        overflow: hidden;
+        aspect-ratio: 4/3;
+        cursor: pointer;
+        display: block;
+        text-decoration: none;
+        border-radius: 0;
+      }
+      .project-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.7s ease;
+      }
+      
+      .project-card-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0,0,0,0.30);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.5s ease;
+      }
+      .project-card:hover .project-card-overlay { background: rgba(0,0,0,0); }
+      .project-card-title {
+        font-family: 'Montserrat', sans-serif;
+        font-size: clamp(1.2rem, 2.5vw, 2rem);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        color: #fff;
+        text-align: center;
+        transition: opacity 0.4s ease;
+      }
+      .project-card:hover .project-card-title { opacity: 0; }
+
+      /* ── Project detail sections ── */
+      .project-detail { padding: 64px 64px 0; }
+      .project-detail:last-child { padding-bottom: 80px; }
+
+      .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-top: 32px; }
+      .gallery-item { overflow: hidden; aspect-ratio: 4/3; }
+      .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+      
+      .gallery-item.wide { grid-column: span 2; }
+
+      .divider { height: 1px; background: var(--line); margin: 64px 64px 0; }
+
+      /* ── Buttons ── */
+      .btn-primary {
+        display: inline-flex; align-items: center;
+        padding: 12px 20px;
+        font-size: 0.8125rem; text-transform: uppercase; letter-spacing: 0.22em; font-weight: 600;
+        background: var(--stone); color: var(--charcoal);
+        transition: opacity 160ms ease;
+      }
+      .btn-primary:hover { opacity: 0.88; }
+
+      @media (max-width: 768px) {
+        .projects-grid { grid-template-columns: 1fr; }
+        .project-detail { padding: 40px 24px 0; }
+        .divider { margin: 40px 24px 0; }
+        .hero-bg { padding: 0 0 48px 24px; }
+        .gallery { grid-template-columns: 1fr 1fr; }
+        .gallery-item.wide { grid-column: span 2; }
+      }
+    
+    /* ── Site Footer ── */
+    .site-footer { background: #111; padding: 64px 0 0; }
+    .footer-inner { max-width: 1200px; margin: 0 auto; padding: 0 48px; }
+    .footer-nav-row {
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 52px;
+    }
+    .footer-nav-group {
+      display: flex; align-items: center; gap: 52px; flex: 1;
+    }
+    .footer-nav-group.left { justify-content: flex-end; }
+    .footer-nav-group.right { justify-content: flex-start; }
+    .footer-logo-center { flex: 0 0 auto; padding: 0 52px; text-align: center; text-decoration: none; display: block; }
+    .footer-link {
+      font-size: .7rem; text-transform: uppercase; letter-spacing: .28em;
+      color: var(--warm-white); text-decoration: none; transition: color 200ms ease;
+    }
+    .footer-link:hover { color: var(--stone); }
+    .footer-rule { height: 1px; background: var(--line); margin-bottom: 40px; }
+    .footer-bottom {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-bottom: 36px;
+    }
+    .footer-contact-link {
+      font-size: .9rem; color: var(--warm-white); text-decoration: none;
+      letter-spacing: .04em; transition: color 200ms ease;
+    }
+    .footer-contact-link:hover { color: var(--stone); }
+    .footer-socials { display: flex; align-items: center; gap: 26px; }
+    .footer-social-link { color: var(--warm-white); transition: color 200ms ease; display: flex; }
+    .footer-social-link:hover { color: var(--stone); }
+    .footer-social-link svg { width: 22px; height: 22px; }
+    .footer-legal {
+      display: flex; align-items: center; justify-content: center; gap: 40px;
+      padding: 18px 0;
+      font-size: .63rem; text-transform: uppercase; letter-spacing: .18em;
+      color: rgba(184,174,161,0.40);
+    }
+    @media (max-width: 768px) {
+      .footer-inner { padding: 0 28px; }
+      .footer-nav-row { flex-wrap: wrap; gap: 36px; }
+      .footer-logo-center { order: -1; flex: 0 0 100%; padding: 0; }
+      .footer-nav-group { gap: 28px; flex: 0; }
+      .footer-bottom { flex-direction: column; gap: 28px; text-align: center; }
+      .footer-legal { flex-direction: column; gap: 10px; }
+    }
+    </style>
+    <link rel="icon" type="image/png" href="favicon.png" />
+</head>
+  <body>
+
+    <!-- ── Fixed header ── -->
+    <header id="siteHeader" class="fixed inset-x-0 top-0 z-30">
+      <nav class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
+        <a href="index.html" class="flex items-end gap-0 hover:opacity-85 transition-opacity">
+          <img id="siteLogoImg" src="Brand_Assets/Brand/SF Logo.png" alt="Stud Finder logo" style="height: 70px; width: auto; display: block;" />
+          <img id="siteTextImg" src="Brand_Assets/SF Text.png" alt="Stud Finder Construction" style="height: 32px; width: auto; display: block; margin-left: -10px; margin-bottom: 4px;" />
+        </a>
+        <div class="hidden gap-7 text-sm uppercase tracking-[0.22em] md:flex items-center">
+          <a href="about.html"    class="nav-link">About</a>
+          <a href="services.html" class="nav-link">Services</a>
+          <a href="projects.html"       class="nav-link" style="color: var(--warm-white);">Projects</a>
+          <a href="contact.html"      class="nav-link nav-contact">Contact</a>
+        </div>
+      </nav>
+    </header>
+
+    <!-- ── Hero ── -->
+    <div id="heroTop" class="hero-section">
+      <div class="hero-bg">
+        <div>
+          <p style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.35em; color: var(--stone); margin: 0 0 10px;">Our Work</p>
+          <h1 style="margin: 0; font-size: clamp(1.6rem, 3vw, 2.8rem); font-weight: 700; line-height: 1; color: var(--warm-white); text-transform: uppercase; letter-spacing: 0.06em;">Our Projects</h1>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Project cards grid ── -->
+    <div class="projects-grid">
+      <a href="project-102-islay.html" class="project-card">
+        <img src="Brand_Assets/Brand/102 W. Islay/102_W_Islay.jpeg" alt="102 W. Islay" />
+        <div class="project-card-overlay">
+          <span class="project-card-title">102 W. Islay</span>
+        </div>
+      </a>
+      <a href="project-106-islay.html" class="project-card">
+        <img src="Brand_Assets/Brand/106 W. Islay/Kitchen.jpg" alt="106 W. Islay" />
+        <div class="project-card-overlay">
+          <span class="project-card-title">106 W. Islay</span>
+        </div>
+      </a>
+      <a href="project-chapala.html" class="project-card">
+        <img src="Brand_Assets/Brand/1805 Chapala/web/living-stove.jpg" alt="1805 Chapala" />
+        <div class="project-card-overlay">
+          <span class="project-card-title">1805 Chapala</span>
+        </div>
+      </a>
+      <a href="project-red-rose.html" class="project-card">
+        <img src="Brand_Assets/Brand/Red Rose/_Lead.JPG" alt="Red Rose" />
+        <div class="project-card-overlay">
+          <span class="project-card-title">Red Rose</span>
+        </div>
+      </a>
+      <a href="project-anacapa.html" class="project-card">
+        <img src="Brand_Assets/Brand/1730 Anacapa St/web/exterior-dusk-front.jpg" alt="1730 Anacapa" />
+        <div class="project-card-overlay">
+          <span class="project-card-title">1730 Anacapa</span>
+        </div>
+      </a>
+    </div>
+
+    <!-- ── Footer ── -->
+      <footer class="site-footer">
+    <div class="footer-inner">
+
+      <!-- Logo centred with nav either side -->
+      <div class="footer-nav-row">
+        <div class="footer-nav-group left">
+          <a href="careers.html" class="footer-link">Careers</a>
+          <a href="about.html"   class="footer-link">Our Team</a>
+        </div>
+        <a href="index.html" class="footer-logo-center" style="display:flex;flex-direction:column;align-items:center;gap:10px;text-decoration:none;">
+          <img src="Brand_Assets/Brand/SF Logo White.png" style="height:56px;width:auto;display:block;" alt="Stud Finder Construction" />
+          <img src="Brand_Assets/SF Text White.png" style="height:20px;width:auto;display:block;" alt="" />
+        </a>
+        <div class="footer-nav-group right">
+          <a href="projects.html" class="footer-link">Projects</a>
+          <a href="contact.html"  class="footer-link">Contact</a>
+        </div>
+      </div>
+
+
+      <!-- Phone | Socials | Email -->
+      <div class="footer-bottom">
+        <a href="tel:8058954449" class="footer-contact-link">805.895.4449</a>
+
+        <div class="footer-socials">
+          <a href="#" class="footer-social-link" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </a>
+          <a href="#" class="footer-social-link" aria-label="TikTok">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.83 1.56V6.81a4.85 4.85 0 01-1.06-.12z"/></svg>
+          </a>
+          <a href="#" class="footer-social-link" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+        </div>
+
+        <a href="mailto:hello@studfinder.com" class="footer-contact-link">hello@studfinder.com</a>
+      </div>
+
+      <!-- Legal -->
+      <div class="footer-legal">
+        <span>CSLB License #1145594</span>
+        <span>© 2026 Stud Finder Construction</span>
+      </div>
+
+    </div>
+  </footer>
+
+    <script>
+      // ── Logo: strip white → warm white ──
+      (function () {
+        const img = document.getElementById('siteLogoImg');
+        function processLogo() {
+          const canvas = document.createElement('canvas');
+          canvas.width = img.naturalWidth; canvas.height = img.naturalHeight;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0);
+          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          const d = imageData.data;
+          for (let i = 0; i < d.length; i += 4) {
+            const lum = (d[i] * 0.299 + d[i+1] * 0.587 + d[i+2] * 0.114) / 255;
+            d[i] = 247; d[i+1] = 245; d[i+2] = 242;
+            d[i+3] = Math.round(255 * (1 - lum));
+          }
+          ctx.putImageData(imageData, 0, 0);
+          img.src = canvas.toDataURL('image/png');
+        }
+        if (img.complete && img.naturalWidth > 0) processLogo();
+        else img.addEventListener('load', processLogo);
+      })();
+
+      // ── Text logo: two versions (white over hero, mixed when scrolled) ──
+      (function () {
+        const img = document.getElementById('siteTextImg');
+        const urls = { white: '', mixed: '' };
+
+        function buildVersion(allWhite) {
+          const c = document.createElement('canvas');
+          c.width = img.naturalWidth; c.height = img.naturalHeight;
+          const ctx = c.getContext('2d');
+          ctx.drawImage(img, 0, 0);
+          const id = ctx.getImageData(0, 0, c.width, c.height);
+          const d = id.data;
+          for (let i = 0; i < d.length; i += 4) {
+            const r = d[i], g = d[i+1], b = d[i+2];
+            const lum = (r * 0.299 + g * 0.587 + b * 0.114) / 255;
+            if (allWhite) {
+              d[i] = 247; d[i+1] = 245; d[i+2] = 242;
+              d[i+3] = Math.round(255 * (1 - lum));
+            } else {
+              if (lum > 0.90) {
+                d[i+3] = Math.round(255 * Math.max(0, (1 - lum) / 0.10));
+              } else if ((r - b) > 10) {
+                d[i+3] = 255;
+              } else {
+                d[i] = 247; d[i+1] = 245; d[i+2] = 242; d[i+3] = 255;
+              }
+            }
+          }
+          ctx.putImageData(id, 0, 0);
+          return c.toDataURL('image/png');
+        }
+
+        function init() {
+          urls.white = buildVersion(true);
+          urls.mixed = buildVersion(false);
+          img.src = urls.white;
+          window.__sfTextUrls = urls;
+        }
+
+        if (img.complete && img.naturalWidth > 0) init();
+        else img.addEventListener('load', init);
+      })();
+
+      // ── Scroll: header + logo swap ──
+      const header = document.getElementById('siteHeader');
+      const hero   = document.getElementById('heroTop');
+
+      const updateHeader = () => {
+        if (!header) return;
+        const past = window.scrollY > 24 || (hero && hero.getBoundingClientRect().bottom < 90);
+        header.classList.toggle('scrolled', past);
+        const textImg = document.getElementById('siteTextImg');
+        const urls = window.__sfTextUrls;
+        if (textImg && urls && urls.white) {
+          textImg.src = past ? urls.mixed : urls.white;
+        }
+      };
+
+      updateHeader();
+      window.addEventListener('scroll', updateHeader, { passive: true });
+      window.addEventListener('resize', updateHeader);
+    </script>
+  </body>
+</html>

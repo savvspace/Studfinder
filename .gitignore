@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+
+# Local tooling output
+temporary screenshots/
+_*.html
+
+# macOS
+.DS_Store
+
+# ── Photo masters ──────────────────────────────────────────────────────────
+# The site serves web-optimised copies; these are the full-size originals.
+# They stay on your machine and are NOT backed up by this repo.
+# Remove a line here if you start referencing one of these files directly.
+
+# Team / brand shoot masters  → served from Brand_Assets/Team/
+Brand_Assets/20260710_Athena_*.jpg
+
+# 1730 Anacapa masters        → served from "1730 Anacapa St/web/"
+Brand_Assets/Brand/1730 Anacapa St/*.jpg
+
+# 1805 Chapala masters        → served from "1805 Chapala/web/"
+Brand_Assets/Brand/1805 Chapala/*.jpg
+Brand_Assets/Brand/1805 Chapala/*.png
+
+# Reference material, not part of the site
+www.dascbuild.com.au_.png
+Brand_Assets/Brand/www.dascbuild.com.au_.png
+Brand_Assets/Brand/Bramding stud finder.png

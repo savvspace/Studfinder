@@ -1,0 +1,587 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stud Finder Construction</title>
+    <meta name="description" content="Stud Finder Construction — refined residential construction and renovation services." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --charcoal: #2D2D2D;
+        --stone:    #B8AEA1;
+        --warm-white: #F7F5F2;
+        --panel:    #363636;
+        --panel-hi: #3f3f3f;
+        --line:     rgba(184, 174, 161, 0.18);
+        --muted:    #B8AEA1;
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; overflow-x: hidden; }
+      body {
+        margin: 0;
+        font-family: 'Raleway', sans-serif;
+        background: #000;
+        color: var(--warm-white);
+        overflow-x: hidden;
+      }
+      h1,h2,h3,h4 { font-family: 'Montserrat', sans-serif; }
+
+      /* ── Hero ── */
+      .hero-section {
+        width: 100vw;
+        height: 100vh;
+        position: relative;
+        overflow: hidden;
+      }
+      .hero-bg {
+        width: 100%;
+        height: 100%;
+        background-image:
+          linear-gradient(to bottom, rgba(45,45,45,0.15) 0%, rgba(45,45,45,0.68) 100%),
+          url('Brand_Assets/Brand/102 W. Islay/102_W_Islay.jpeg');
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        padding-bottom: calc(12vh - 60px);
+      }
+
+      /* ── Panels ── */
+      .panel {
+        background: var(--panel);
+      }
+
+      /* ── Header ── */
+      header {
+        transition: background 240ms ease, box-shadow 240ms ease;
+        background: transparent;
+      }
+      header.scrolled {
+        background: #000;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.40);
+      }
+
+      /* Nav links: white over hero, taupe when scrolled */
+      .nav-link {
+        color: #F7F5F2;
+        transition: color 240ms ease;
+      }
+      header.scrolled .nav-link {
+        color: var(--stone);
+      }
+      .nav-link:hover {
+        color: var(--stone) !important;
+      }
+      header.scrolled .nav-link:hover {
+        color: #F7F5F2 !important;
+      }
+
+      /* Contact box */
+      .nav-contact {
+        color: #F7F5F2;
+        border: 1px solid rgba(247,245,242,0.55);
+        padding: 8px 20px;
+        border-radius: 4px;
+        transition: color 240ms ease, border-color 240ms ease, background 160ms ease;
+      }
+      header.scrolled .nav-contact {
+        color: var(--stone);
+        border-color: var(--stone);
+      }
+      .nav-contact:hover { background: var(--stone); border-color: var(--stone); color: var(--charcoal) !important; }
+
+      /* ── CTA buttons ── */
+      .btn-primary {
+        display: inline-flex;
+        align-items: center;
+        padding: 12px 20px;
+        font-size: 0.8125rem;
+        text-transform: uppercase;
+        letter-spacing: 0.22em;
+        font-weight: 600;
+        background: var(--stone);
+        color: var(--charcoal);
+        transition: opacity 160ms ease;
+      }
+      .btn-primary:hover { opacity: 0.88; }
+
+      .btn-ghost {
+        display: inline-flex;
+        align-items: center;
+        padding: 12px 20px;
+        font-size: 0.8125rem;
+        text-transform: uppercase;
+        letter-spacing: 0.22em;
+        border: 1px solid rgba(247,245,242,0.30);
+        color: var(--warm-white);
+        transition: background 160ms ease;
+      }
+      .btn-ghost:hover { background: rgba(247,245,242,0.10); }
+
+      /* ── Full-bleed photo band ── */
+      .photo-band {
+        position: relative;
+        left: 50%;
+        width: 100vw;
+        margin: 56px 0 56px -50vw;
+        height: 56vh;
+        min-height: 340px;
+        overflow: hidden;
+      }
+      .photo-band img {
+        width: 100%; height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+      .photo-band::after {
+        content: '';
+        position: absolute; inset: 0;
+        background: linear-gradient(to bottom, rgba(0,0,0,.20) 0%, rgba(0,0,0,.45) 100%);
+        pointer-events: none;
+      }
+      /* ── Projects carousel ── */
+      .proj-card { flex: 0 0 calc(50% - 0.5rem); }
+
+      @media (max-width: 768px) {
+        .photo-band { height: 40vh; min-height: 240px; margin-top: 36px; margin-bottom: 36px; }
+        .proj-card { flex: 0 0 100%; }
+      }
+
+    /* ── Site Footer ── */
+    .site-footer { background: #111; padding: 64px 0 0; }
+    .footer-inner { max-width: 1200px; margin: 0 auto; padding: 0 48px; }
+    .footer-nav-row {
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 52px;
+    }
+    .footer-nav-group {
+      display: flex; align-items: center; gap: 52px; flex: 1;
+    }
+    .footer-nav-group.left { justify-content: flex-end; }
+    .footer-nav-group.right { justify-content: flex-start; }
+    .footer-logo-center { flex: 0 0 auto; padding: 0 52px; text-align: center; text-decoration: none; display: block; }
+    .footer-link {
+      font-size: .7rem; text-transform: uppercase; letter-spacing: .28em;
+      color: var(--warm-white); text-decoration: none; transition: color 200ms ease;
+    }
+    .footer-link:hover { color: var(--stone); }
+    .footer-rule { height: 1px; background: var(--line); margin-bottom: 40px; }
+    .footer-bottom {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-bottom: 36px;
+    }
+    .footer-contact-link {
+      font-size: .9rem; color: var(--warm-white); text-decoration: none;
+      letter-spacing: .04em; transition: color 200ms ease;
+    }
+    .footer-contact-link:hover { color: var(--stone); }
+    .footer-socials { display: flex; align-items: center; gap: 26px; }
+    .footer-social-link { color: var(--warm-white); transition: color 200ms ease; display: flex; }
+    .footer-social-link:hover { color: var(--stone); }
+    .footer-social-link svg { width: 22px; height: 22px; }
+    .footer-legal {
+      display: flex; align-items: center; justify-content: center; gap: 40px;
+      padding: 18px 0;
+      font-size: .63rem; text-transform: uppercase; letter-spacing: .18em;
+      color: rgba(184,174,161,0.40);
+    }
+    @media (max-width: 768px) {
+      .footer-inner { padding: 0 28px; }
+      .footer-nav-row { flex-wrap: wrap; gap: 36px; }
+      .footer-logo-center { order: -1; flex: 0 0 100%; padding: 0; }
+      .footer-nav-group { gap: 28px; flex: 0; }
+      .footer-bottom { flex-direction: column; gap: 28px; text-align: center; }
+      .footer-legal { flex-direction: column; gap: 10px; }
+    }
+    </style>
+    <link rel="icon" type="image/png" href="favicon.png" />
+</head>
+  <body>
+
+    <!-- ── Fixed header ── -->
+    <header id="siteHeader" class="fixed inset-x-0 top-0 z-30">
+      <nav class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
+        <!-- Logo -->
+        <a href="#top" class="flex items-end gap-0 hover:opacity-85 transition-opacity">
+          <img id="siteLogoImg" src="Brand_Assets/Brand/SF Logo.png" alt="Stud Finder logo" style="height: 70px; width: auto; display: block;" />
+          <img id="siteTextImg" src="Brand_Assets/SF Text.png" alt="Stud Finder Construction" style="height: 32px; width: auto; display: block; margin-left: -10px; margin-bottom: 4px;" />
+        </a>
+        <!-- Nav links -->
+        <div class="hidden gap-7 text-sm uppercase tracking-[0.22em] md:flex items-center">
+          <a href="about.html" class="nav-link">About</a>
+          <a href="services.html" class="nav-link">Services</a>
+          <a href="projects.html" class="nav-link">Projects</a>
+          <a href="contact.html"  class="nav-link nav-contact">Contact</a>
+        </div>
+      </nav>
+    </header>
+
+    <!-- ── Full-width square hero ── -->
+    <div id="top" class="hero-section">
+      <div class="hero-bg">
+        <div style="padding: 40px; text-align: center; max-width: 780px;">
+          <p style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.35em; color: var(--stone); margin: 0 0 9px;">Stud Finder Construction, Inc.</p>
+          <h1 style="margin: 0 0 25px; font-size: clamp(2.6rem, 5vw, 4.8rem); font-weight: 600; line-height: 1.05; color: var(--warm-white);">Precision built.<br>Beautifully finished.</h1>
+          <div style="display: flex; justify-content: center;">
+            <a href="contact.html" class="btn-primary">Request a consultation</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Content sections ── -->
+    <main class="mx-auto flex max-w-7xl flex-col gap-16 px-6 pb-24 pt-16 lg:px-8">
+
+      <!-- About -->
+      <section id="about" class="overflow-hidden" style="min-height: 90vh;">
+        <div class="grid lg:grid-cols-[1.1fr_0.9fr]" style="min-height: 90vh;">
+          <!-- Founder photos -->
+          <div class="grid grid-cols-2 gap-4 p-8 items-center" style="align-content: center;">
+            <div class="overflow-hidden" style="height: 55vh;">
+              <img src="Brand_Assets/Team/erik-framing.jpg" alt="Erik, Co-Founder and Lead Builder, on site" class="w-full h-full object-cover" style="object-position: 50% center;" />
+            </div>
+            <div class="overflow-hidden" style="height: 55vh;">
+              <img src="Brand_Assets/Team/rachael-framing.jpg" alt="Rachael Bissig, Co-Founder and Principal, on site" class="w-full h-full object-cover" style="object-position: 70% center;" />
+            </div>
+          </div>
+          <!-- About text -->
+          <div class="flex flex-col justify-center p-10 lg:p-14">
+            <p class="text-sm uppercase tracking-[0.35em] mb-4" style="color: var(--stone);">About Us</p>
+            <h2 class="text-4xl font-bold uppercase tracking-wide mb-8 lg:text-5xl" style="color: var(--warm-white);">About Us</h2>
+            <p class="mb-4 leading-relaxed" style="color: var(--muted);">Stud Finder Construction is dedicated to delivering high-quality building and renovation services. With years of experience, we bring your vision to life with precision, expertise, and exceptional craftsmanship.</p>
+            <p class="mb-10 leading-relaxed" style="color: var(--muted);">From concept to completion, we work closely with you to ensure your project exceeds expectations.</p>
+            <div>
+              <a href="contact.html" class="inline-flex items-center px-8 py-4 text-sm uppercase tracking-[0.2em] font-semibold transition hover:opacity-85" style="background: var(--stone); color: var(--charcoal);">Learn More</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Services -->
+      <section id="services">
+        <div class="p-8 lg:p-12 pb-0">
+          <p class="text-sm uppercase tracking-[0.35em]" style="color: var(--stone);">What We Do</p>
+          <h2 class="mt-3 text-4xl font-bold uppercase tracking-wide lg:text-5xl" style="color: var(--warm-white);">Our Services</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 mt-8">
+          <!-- New Home Builds -->
+          <article class="group relative overflow-hidden" style="background: var(--panel);">
+            <div class="overflow-hidden" style="aspect-ratio: 4/3;">
+              <img src="Brand_Assets/Team/jobsite-walls.jpg" alt="New Home Builds" class="w-full h-full object-cover" loading="lazy" />
+            </div>
+            <div class="p-6">
+              <h3 class="text-lg font-bold uppercase tracking-[0.12em]" style="color: var(--warm-white);">New Home Builds</h3>
+              <p class="mt-2 text-sm leading-relaxed" style="color: var(--muted);">Custom homes crafted from the ground up around your vision, lifestyle and longevity.</p>
+            </div>
+          </article>
+          <!-- Remodels & Additions -->
+          <article class="group relative overflow-hidden" style="background: var(--panel);">
+            <div class="overflow-hidden" style="aspect-ratio: 4/3;">
+              <img src="Brand_Assets/Brand/102 W. Islay/102_Living_Room.jpeg" alt="Remodels and Additions" class="w-full h-full object-cover" />
+            </div>
+            <div class="p-6">
+              <h3 class="text-lg font-bold uppercase tracking-[0.12em]" style="color: var(--warm-white);">Remodels & Additions</h3>
+              <p class="mt-2 text-sm leading-relaxed" style="color: var(--muted);">Seamless transformations that expand your space and elevate your home's character.</p>
+            </div>
+          </article>
+          <!-- ADUs -->
+          <article class="group relative overflow-hidden" style="background: var(--panel);">
+            <div class="overflow-hidden" style="aspect-ratio: 4/3;">
+              <img src="Brand_Assets/Brand/106 W. Islay/Studio.jpg" alt="ADUs" class="w-full h-full object-cover" />
+            </div>
+            <div class="p-6">
+              <h3 class="text-lg font-bold uppercase tracking-[0.12em]" style="color: var(--warm-white);">ADUs</h3>
+              <p class="mt-2 text-sm leading-relaxed" style="color: var(--muted);">Accessory dwelling units designed to maximise your property's value and versatility.</p>
+            </div>
+          </article>
+          <!-- Permitting -->
+          <article class="group relative overflow-hidden" style="background: var(--panel);">
+            <div class="overflow-hidden" style="aspect-ratio: 4/3;">
+              <img src="Brand_Assets/Brand/1730 Anacapa St/web/exterior-flagstone-patio.jpg" alt="Home Maintenance" class="w-full h-full object-cover" loading="lazy" />
+            </div>
+            <div class="p-6">
+              <h3 class="text-lg font-bold uppercase tracking-[0.12em]" style="color: var(--warm-white);">Home Maintenance</h3>
+              <p class="mt-2 text-sm leading-relaxed" style="color: var(--muted);">Ongoing care and upkeep to protect your investment and keep your home in peak condition year-round.</p>
+            </div>
+          </article>
+          <!-- Bathrooms & Kitchens -->
+          <article class="group relative overflow-hidden" style="background: var(--panel);">
+            <div class="overflow-hidden" style="aspect-ratio: 4/3;">
+              <img src="Brand_Assets/Brand/106 W. Islay/Kitchen.jpg" alt="Bathrooms and Kitchens" class="w-full h-full object-cover" />
+            </div>
+            <div class="p-6">
+              <h3 class="text-lg font-bold uppercase tracking-[0.12em]" style="color: var(--warm-white);">Bathrooms & Kitchens</h3>
+              <p class="mt-2 text-sm leading-relaxed" style="color: var(--muted);">High-end kitchen and bathroom renovations where function meets refined design.</p>
+            </div>
+          </article>
+          <!-- Permaculture -->
+          <article class="group relative overflow-hidden" style="background: var(--panel);">
+            <div class="overflow-hidden" style="aspect-ratio: 4/3;">
+              <img src="Brand_Assets/Brand/Firefly_can you add chickens to this photo as well as vegetables in the vegetable garden 703791 (1).png" alt="Permaculture" class="w-full h-full object-cover" />
+            </div>
+            <div class="p-6">
+              <h3 class="text-lg font-bold uppercase tracking-[0.12em]" style="color: var(--warm-white);">Permaculture</h3>
+              <p class="mt-2 text-sm leading-relaxed" style="color: var(--muted);">Sustainable outdoor design that integrates living systems with your built environment.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Craft band -->
+      <div class="photo-band">
+        <img src="Brand_Assets/Team/craft-saw.jpg" alt="A Stud Finder carpenter cutting framing lumber on site" loading="lazy" />
+      </div>
+
+      <!-- Projects -->
+      <section id="projects" class="py-10 px-6 lg:px-10">
+        <h2 class="text-center text-4xl font-bold uppercase tracking-widest mb-8 lg:text-5xl" style="color: var(--warm-white);">Our Projects</h2>
+        <div class="relative flex items-center gap-4">
+          <!-- Left arrow -->
+          <button id="projPrev" class="flex-shrink-0 w-11 h-11 rounded-full flex items-center justify-center text-lg font-bold transition" style="background: var(--stone); color: var(--charcoal);">&#8592;</button>
+          <!-- Viewport -->
+          <div class="overflow-hidden flex-1">
+            <div id="projTrack" style="display:flex; gap:1rem; transition: transform 0.5s ease;">
+              <article class="proj-card">
+                <div class="overflow-hidden" style="aspect-ratio: 1/1;">
+                  <img src="Brand_Assets/Brand/102 W. Islay/102_W_Islay.jpeg" alt="102 W. Islay" class="w-full h-full object-cover" />
+                </div>
+                <h3 class="mt-4 text-lg font-bold uppercase tracking-widest text-center" style="color: var(--warm-white);">102 W. Islay</h3>
+              </article>
+              <article class="proj-card">
+                <div class="overflow-hidden" style="aspect-ratio: 1/1;">
+                  <img src="Brand_Assets/Brand/106 W. Islay/Kitchen.jpg" alt="106 W. Islay" class="w-full h-full object-cover" />
+                </div>
+                <h3 class="mt-4 text-lg font-bold uppercase tracking-widest text-center" style="color: var(--warm-white);">106 W. Islay</h3>
+              </article>
+              <article class="proj-card">
+                <div class="overflow-hidden" style="aspect-ratio: 1/1;">
+                  <img src="Brand_Assets/Brand/1805 Chapala/web/living-stove.jpg" alt="1805 Chapala" class="w-full h-full object-cover" />
+                </div>
+                <h3 class="mt-4 text-lg font-bold uppercase tracking-widest text-center" style="color: var(--warm-white);">1805 Chapala</h3>
+              </article>
+              <article class="proj-card">
+                <div class="overflow-hidden" style="aspect-ratio: 1/1;">
+                  <img src="Brand_Assets/Brand/Red Rose/_Lead.JPG" alt="Red Rose" class="w-full h-full object-cover" />
+                </div>
+                <h3 class="mt-4 text-lg font-bold uppercase tracking-widest text-center" style="color: var(--warm-white);">Red Rose</h3>
+              </article>
+              <article class="proj-card">
+                <div class="overflow-hidden" style="aspect-ratio: 1/1;">
+                  <img src="Brand_Assets/Brand/1730 Anacapa St/web/exterior-dusk-front.jpg" alt="1730 Anacapa" class="w-full h-full object-cover" />
+                </div>
+                <h3 class="mt-4 text-lg font-bold uppercase tracking-widest text-center" style="color: var(--warm-white);">1730 Anacapa</h3>
+              </article>
+            </div>
+          </div>
+          <!-- Right arrow -->
+          <button id="projNext" class="flex-shrink-0 w-11 h-11 rounded-full flex items-center justify-center text-lg font-bold transition" style="background: var(--stone); color: var(--charcoal);">&#8594;</button>
+        </div>
+        <!-- Dots -->
+        <div id="projDots" class="mt-5 flex justify-center gap-2"></div>
+        <div class="mt-8 text-center">
+          <a href="projects.html" class="btn-primary">View All Projects</a>
+        </div>
+      </section>
+
+      <!-- Contact -->
+      <section id="contact" class="p-6 lg:p-8">
+        <p class="text-sm uppercase tracking-[0.35em]" style="color: var(--stone);">Contact</p>
+        <h2 class="mt-3 text-3xl font-semibold md:text-4xl" style="color: var(--warm-white);">Ready to start your next project?</h2>
+        <p class="mt-4 max-w-3xl" style="color: var(--muted);">Let's bring your dream project to life. Contact Stud Finder Construction for residential construction, renovations and tailored finish packages.</p>
+        <div class="mt-6 flex flex-wrap gap-4">
+          <a href="tel:8058954449" class="btn-primary rounded-full" style="border-radius: 999px;">805.895.4449</a>
+          <a href="mailto:hello@studfinder.com" class="btn-primary rounded-full" style="border-radius: 999px;">hello@studfinder.com</a>
+        </div>
+      </section>
+    </main>
+
+    <!-- ── Footer ── -->
+      <footer class="site-footer">
+    <div class="footer-inner">
+
+      <!-- Logo centred with nav either side -->
+      <div class="footer-nav-row">
+        <div class="footer-nav-group left">
+          <a href="careers.html" class="footer-link">Careers</a>
+          <a href="about.html"   class="footer-link">Our Team</a>
+        </div>
+        <a href="index.html" class="footer-logo-center" style="display:flex;flex-direction:column;align-items:center;gap:10px;text-decoration:none;">
+          <img src="Brand_Assets/Brand/SF Logo White.png" style="height:56px;width:auto;display:block;" alt="Stud Finder Construction" />
+          <img src="Brand_Assets/SF Text White.png" style="height:20px;width:auto;display:block;" alt="" />
+        </a>
+        <div class="footer-nav-group right">
+          <a href="projects.html" class="footer-link">Projects</a>
+          <a href="contact.html"  class="footer-link">Contact</a>
+        </div>
+      </div>
+
+
+      <!-- Phone | Socials | Email -->
+      <div class="footer-bottom">
+        <a href="tel:8058954449" class="footer-contact-link">805.895.4449</a>
+
+        <div class="footer-socials">
+          <a href="#" class="footer-social-link" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </a>
+          <a href="#" class="footer-social-link" aria-label="TikTok">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.83 1.56V6.81a4.85 4.85 0 01-1.06-.12z"/></svg>
+          </a>
+          <a href="#" class="footer-social-link" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+        </div>
+
+        <a href="mailto:hello@studfinder.com" class="footer-contact-link">hello@studfinder.com</a>
+      </div>
+
+      <!-- Legal -->
+      <div class="footer-legal">
+        <span>CSLB License #1145594</span>
+        <span>© 2026 Stud Finder Construction</span>
+      </div>
+
+    </div>
+  </footer>
+
+    <script>
+      // Strip white background from logo PNG and recolour to warm white
+      (function () {
+        const img = document.getElementById('siteLogoImg');
+        function processLogo() {
+          const canvas = document.createElement('canvas');
+          canvas.width  = img.naturalWidth;
+          canvas.height = img.naturalHeight;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0);
+          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          const d = imageData.data;
+          for (let i = 0; i < d.length; i += 4) {
+            const luminance = (d[i] * 0.299 + d[i+1] * 0.587 + d[i+2] * 0.114) / 255;
+            d[i]   = 247;
+            d[i+1] = 245;
+            d[i+2] = 242;
+            d[i+3] = Math.round(255 * (1 - luminance));
+          }
+          ctx.putImageData(imageData, 0, 0);
+          img.src = canvas.toDataURL('image/png');
+        }
+        if (img.complete && img.naturalWidth > 0) { processLogo(); }
+        else { img.addEventListener('load', processLogo); }
+      })();
+
+      // Build two versions of the text image and swap on scroll
+      (function () {
+        const img = document.getElementById('siteTextImg');
+        const urls = { white: '', mixed: '' };
+
+        function buildVersion(allWhite) {
+          const c = document.createElement('canvas');
+          c.width = img.naturalWidth;
+          c.height = img.naturalHeight;
+          const ctx = c.getContext('2d');
+          ctx.drawImage(img, 0, 0);
+          const id = ctx.getImageData(0, 0, c.width, c.height);
+          const d = id.data;
+          for (let i = 0; i < d.length; i += 4) {
+            const r = d[i], g = d[i+1], b = d[i+2];
+            const lum = (r * 0.299 + g * 0.587 + b * 0.114) / 255;
+            if (allWhite) {
+              // Everything → warm white with alpha from darkness
+              d[i] = 247; d[i+1] = 245; d[i+2] = 242;
+              d[i+3] = Math.round(255 * (1 - lum));
+            } else {
+              if (lum > 0.90) {
+                // Background → fade to transparent
+                d[i+3] = Math.round(255 * Math.max(0, (1 - lum) / 0.10));
+              } else if ((r - b) > 10) {
+                // Warm-toned pixel → stone "CONSTRUCTION", keep colour
+                d[i+3] = 255;
+              } else {
+                // Neutral/dark → "STUD FINDER" → warm white
+                d[i] = 247; d[i+1] = 245; d[i+2] = 242; d[i+3] = 255;
+              }
+            }
+          }
+          ctx.putImageData(id, 0, 0);
+          return c.toDataURL('image/png');
+        }
+
+        function init() {
+          urls.white = buildVersion(true);
+          urls.mixed = buildVersion(false);
+          img.src = urls.white;
+          window.__sfTextUrls = urls;
+        }
+
+        if (img.complete && img.naturalWidth > 0) init();
+        else img.addEventListener('load', init);
+      })();
+
+      const header = document.getElementById('siteHeader');
+      const hero   = document.getElementById('top');
+
+      const updateHeader = () => {
+        if (!header) return;
+        const past = window.scrollY > 24 || (hero && hero.getBoundingClientRect().bottom < 90);
+        header.classList.toggle('scrolled', past);
+        const textImg = document.getElementById('siteTextImg');
+        const urls = window.__sfTextUrls;
+        if (textImg && urls && urls.white) {
+          textImg.src = past ? urls.mixed : urls.white;
+        }
+      };
+
+      updateHeader();
+      window.addEventListener('scroll', updateHeader, { passive: true });
+      window.addEventListener('resize', updateHeader);
+
+      // ── Projects carousel: advances one project at a time ──
+      (function () {
+        const track    = document.getElementById('projTrack');
+        const prev     = document.getElementById('projPrev');
+        const next     = document.getElementById('projNext');
+        const dotsWrap = document.getElementById('projDots');
+        const cards    = Array.from(track.children);
+        let slide = 0, total = 1;
+
+        const perView = () => (window.innerWidth <= 768 ? 1 : 2);
+
+        function goTo(n) {
+          slide = Math.max(0, Math.min(n, total - 1));
+          // Step by the real card pitch so the gap is always accounted for
+          const step = cards.length > 1 ? cards[1].offsetLeft - cards[0].offsetLeft : 0;
+          track.style.transform = `translateX(-${slide * step}px)`;
+          Array.from(dotsWrap.children).forEach((d, i) => d.style.opacity = i === slide ? '1' : '0.35');
+          prev.style.opacity = slide === 0 ? '0.4' : '1';
+          next.style.opacity = slide === total - 1 ? '0.4' : '1';
+        }
+
+        function build() {
+          total = Math.max(1, cards.length - perView() + 1);
+          slide = Math.min(slide, total - 1);
+          dotsWrap.innerHTML = '';
+          for (let i = 0; i < total; i++) {
+            const b = document.createElement('button');
+            b.className = 'proj-dot w-2 h-2 rounded-full transition-opacity';
+            b.style.background = 'var(--stone)';
+            b.setAttribute('aria-label', `Go to project ${i + 1}`);
+            b.addEventListener('click', () => goTo(i));
+            dotsWrap.appendChild(b);
+          }
+          goTo(slide);
+        }
+
+        prev.addEventListener('click', () => goTo(slide - 1));
+        next.addEventListener('click', () => goTo(slide + 1));
+        window.addEventListener('resize', build);
+        build();
+      })();
+    </script>
+  </body>
+</html>

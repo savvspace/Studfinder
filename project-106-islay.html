@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>106 W. Islay — Stud Finder Construction</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root { --stone:#B8AEA1; --warm-white:#F7F5F2; --charcoal:#2D2D2D; --muted:#B8AEA1; --line:rgba(184,174,161,0.18); }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; overflow-x:hidden; }
+    body { margin:0; font-family:'Raleway',sans-serif; background:#000; color:var(--warm-white); }
+    h1,h2,h3 { font-family:'Montserrat',sans-serif; }
+
+    header { transition:background 240ms ease,box-shadow 240ms ease; background:transparent; }
+    header.scrolled { background:#000; box-shadow:0 4px 24px rgba(0,0,0,.4); }
+    .nav-link { color:#F7F5F2; transition:color 240ms ease; }
+    header.scrolled .nav-link { color:var(--stone); }
+    .nav-link:hover { color:var(--stone) !important; }
+    header.scrolled .nav-link:hover { color:#F7F5F2 !important; }
+    .nav-contact { color:#F7F5F2; border:1px solid rgba(247,245,242,.55); padding:8px 20px; border-radius:4px; transition:color 240ms ease,border-color 240ms ease,background 160ms ease; }
+    header.scrolled .nav-contact { color:var(--stone); border-color:var(--stone); }
+    .nav-contact:hover { background: var(--stone); border-color: var(--stone); color: var(--charcoal) !important; }
+
+    .project-hero { width:100%; height:75vh; position:relative; overflow:hidden; }
+    .project-hero img { width:100%; height:100%; object-fit:cover; object-position:center; }
+    .project-hero-overlay { position:absolute; inset:0; background:linear-gradient(to bottom,rgba(0,0,0,.05) 0%,rgba(0,0,0,.60) 100%); display:flex; align-items:flex-end; padding:48px 64px; }
+
+    .project-intro { padding:64px 64px 56px; max-width:820px; }
+
+    .gallery { display:grid; grid-template-columns:1fr 1fr; gap:8px; max-width:1180px; margin:0 auto; padding:0 28px; }
+    .gi { overflow:hidden; aspect-ratio:4/3; }
+    .gi.wide { grid-column:span 2; aspect-ratio:16/7; }
+    .gi img { width:100%; height:100%; object-fit:cover; transition:transform .5s ease; }
+
+    .next-project { display:block; position:relative; height:52vh; overflow:hidden; text-decoration:none; margin-top:80px; }
+    .next-project img { width:100%; height:100%; object-fit:cover; transition:transform .7s ease; }
+    .np-overlay { position:absolute; inset:0; background:rgba(0,0,0,.42); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; transition:background .4s ease; }
+    .next-project:hover .np-overlay { background:rgba(0,0,0,.25); }
+    .np-label { font-size:.72rem; text-transform:uppercase; letter-spacing:.35em; color:var(--stone); }
+    .np-title { font-family:'Montserrat',sans-serif; font-size:clamp(1.8rem,4vw,3.5rem); font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--warm-white); }
+  
+    /* ── Site Footer ── */
+    .site-footer { background: #111; padding: 120px 0 0; }
+    .footer-inner { max-width: 1200px; margin: 0 auto; padding: 0 48px; }
+    .footer-nav-row {
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 52px;
+    }
+    .footer-nav-group {
+      display: flex; align-items: center; gap: 52px; flex: 1;
+    }
+    .footer-nav-group.left { justify-content: flex-end; }
+    .footer-nav-group.right { justify-content: flex-start; }
+    .footer-logo-center { flex: 0 0 auto; padding: 0 52px; text-align: center; text-decoration: none; display: block; }
+    .footer-link {
+      font-size: .7rem; text-transform: uppercase; letter-spacing: .28em;
+      color: var(--warm-white); text-decoration: none; transition: color 200ms ease;
+    }
+    .footer-link:hover { color: var(--stone); }
+    .footer-rule { height: 1px; background: var(--line); margin-bottom: 40px; }
+    .footer-bottom {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-bottom: 36px;
+    }
+    .footer-contact-link {
+      font-size: .9rem; color: var(--warm-white); text-decoration: none;
+      letter-spacing: .04em; transition: color 200ms ease;
+    }
+    .footer-contact-link:hover { color: var(--stone); }
+    .footer-socials { display: flex; align-items: center; gap: 26px; }
+    .footer-social-link { color: var(--warm-white); transition: color 200ms ease; display: flex; }
+    .footer-social-link:hover { color: var(--stone); }
+    .footer-social-link svg { width: 22px; height: 22px; }
+    .footer-legal {
+      display: flex; align-items: center; justify-content: center; gap: 40px;
+      padding: 18px 0;
+      font-size: .63rem; text-transform: uppercase; letter-spacing: .18em;
+      color: rgba(184,174,161,0.40);
+    }
+    @media (max-width: 768px) {
+      .footer-inner { padding: 0 28px; }
+      .footer-nav-row { flex-wrap: wrap; gap: 36px; }
+      .footer-logo-center { order: -1; flex: 0 0 100%; padding: 0; }
+      .footer-nav-group { gap: 28px; flex: 0; }
+      .footer-bottom { flex-direction: column; gap: 28px; text-align: center; }
+      .footer-legal { flex-direction: column; gap: 10px; }
+    }
+    </style>
+  <link rel="icon" type="image/png" href="favicon.png" />
+</head>
+<body>
+
+  <header id="siteHeader" class="fixed inset-x-0 top-0 z-30">
+    <nav class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
+      <a href="index.html" class="flex items-end gap-0 hover:opacity-85 transition-opacity">
+        <img id="siteLogoImg" src="Brand_Assets/Brand/SF Logo.png" alt="Stud Finder logo" style="height:70px;width:auto;display:block;" />
+        <img id="siteTextImg" src="Brand_Assets/SF Text.png" alt="Stud Finder Construction" style="height:32px;width:auto;display:block;margin-left:-10px;margin-bottom:4px;" />
+      </a>
+      <div class="hidden gap-7 text-sm uppercase tracking-[0.22em] md:flex items-center">
+        <a href="about.html"    class="nav-link">About</a>
+        <a href="services.html" class="nav-link">Services</a>
+        <a href="projects.html"       class="nav-link" style="color:var(--warm-white);">Projects</a>
+        <a href="contact.html"      class="nav-link nav-contact">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <div id="heroTop" class="project-hero">
+    <img src="Brand_Assets/Brand/106 W. Islay/Backyard.jpg" alt="106 W. Islay" />
+    <div class="project-hero-overlay">
+      <div>
+        <p style="font-size:.72rem;text-transform:uppercase;letter-spacing:.35em;color:var(--stone);margin:0 0 10px;">Remodel & ADU</p>
+        <h1 style="margin:0;font-size:clamp(1.4rem,3vw,2.6rem);font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--warm-white);">106 W. Islay</h1>
+      </div>
+    </div>
+  </div>
+
+  <div class="project-intro">
+    <p style="font-size:1.05rem;line-height:1.85;color:var(--muted);">A comprehensive remodel paired with a detached ADU studio, featuring premium kitchen finishes, a resort-style backyard with spa, and thoughtful detailing throughout. The property was reimagined from the ground up — maximising space, light, and livability across both the main residence and the accessory unit.</p>
+  </div>
+
+  <div class="gallery">
+    <div class="gi wide"><img src="Brand_Assets/Brand/106 W. Islay/Kitchen.jpg" alt="Kitchen" /></div>
+    <div class="gi"><img src="Brand_Assets/Brand/106 W. Islay/Kitchen-2.jpg" alt="Kitchen Detail" /></div>
+    <div class="gi"><img src="Brand_Assets/Brand/106 W. Islay/Bath.jpg" alt="Bathroom" /></div>
+    <div class="gi wide"><img src="Brand_Assets/Brand/106 W. Islay/Backyard-2.jpg" alt="Backyard" /></div>
+    <div class="gi"><img src="Brand_Assets/Brand/106 W. Islay/Studio.jpg" alt="ADU Studio" /></div>
+    <div class="gi"><img src="Brand_Assets/Brand/106 W. Islay/Studio-2.jpg" alt="ADU Studio Interior" /></div>
+    <div class="gi"><img src="Brand_Assets/Brand/106 W. Islay/Hot Tub.jpg" alt="Hot Tub" /></div>
+    <div class="gi"><img src="Brand_Assets/Brand/106 W. Islay/Dining Counter.jpg" alt="Dining Counter" /></div>
+    <div class="gi wide"><img src="Brand_Assets/Brand/106 W. Islay/Kitchen-3.jpg" alt="Kitchen" /></div>
+    <div class="gi"><img src="Brand_Assets/Brand/106 W. Islay/Hallway.jpg" alt="Hallway" /></div>
+    <div class="gi"><img src="Brand_Assets/Brand/106 W. Islay/Unit 1.jpg" alt="Unit" /></div>
+  </div>
+
+  <a href="project-chapala.html" class="next-project">
+    <img src="Brand_Assets/Brand/1805 Chapala/web/living-stove.jpg" alt="1805 Chapala" />
+    <div class="np-overlay">
+      <span class="np-label">Next Project</span>
+      <span class="np-title">1805 Chapala</span>
+    </div>
+  </a>
+
+    <footer class="site-footer">
+    <div class="footer-inner">
+
+      <!-- Logo centred with nav either side -->
+      <div class="footer-nav-row">
+        <div class="footer-nav-group left">
+          <a href="careers.html" class="footer-link">Careers</a>
+          <a href="about.html"   class="footer-link">Our Team</a>
+        </div>
+        <a href="index.html" class="footer-logo-center" style="display:flex;flex-direction:column;align-items:center;gap:10px;text-decoration:none;">
+          <img src="Brand_Assets/Brand/SF Logo White.png" style="height:56px;width:auto;display:block;" alt="Stud Finder Construction" />
+          <img src="Brand_Assets/SF Text White.png" style="height:20px;width:auto;display:block;" alt="" />
+        </a>
+        <div class="footer-nav-group right">
+          <a href="projects.html" class="footer-link">Projects</a>
+          <a href="contact.html"  class="footer-link">Contact</a>
+        </div>
+      </div>
+
+
+      <!-- Phone | Socials | Email -->
+      <div class="footer-bottom">
+        <a href="tel:8058954449" class="footer-contact-link">805.895.4449</a>
+
+        <div class="footer-socials">
+          <a href="#" class="footer-social-link" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </a>
+          <a href="#" class="footer-social-link" aria-label="TikTok">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.83 1.56V6.81a4.85 4.85 0 01-1.06-.12z"/></svg>
+          </a>
+          <a href="#" class="footer-social-link" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+        </div>
+
+        <a href="mailto:hello@studfinder.com" class="footer-contact-link">hello@studfinder.com</a>
+      </div>
+
+      <!-- Legal -->
+      <div class="footer-legal">
+        <span>CSLB License #1145594</span>
+        <span>© 2026 Stud Finder Construction</span>
+      </div>
+
+    </div>
+  </footer>
+
+  <script>
+    (function(){const img=document.getElementById('siteLogoImg');function p(){const c=document.createElement('canvas');c.width=img.naturalWidth;c.height=img.naturalHeight;const x=c.getContext('2d');x.drawImage(img,0,0);const d=x.getImageData(0,0,c.width,c.height);const px=d.data;for(let i=0;i<px.length;i+=4){const l=(px[i]*.299+px[i+1]*.587+px[i+2]*.114)/255;px[i]=247;px[i+1]=245;px[i+2]=242;px[i+3]=Math.round(255*(1-l));}x.putImageData(d,0,0);img.src=c.toDataURL('image/png');}if(img.complete&&img.naturalWidth>0)p();else img.addEventListener('load',p);})();
+    (function(){const img=document.getElementById('siteTextImg');const urls={white:'',mixed:''};function bv(aw){const c=document.createElement('canvas');c.width=img.naturalWidth;c.height=img.naturalHeight;const x=c.getContext('2d');x.drawImage(img,0,0);const id=x.getImageData(0,0,c.width,c.height);const d=id.data;for(let i=0;i<d.length;i+=4){const r=d[i],g=d[i+1],b=d[i+2],l=(r*.299+g*.587+b*.114)/255;if(aw){d[i]=247;d[i+1]=245;d[i+2]=242;d[i+3]=Math.round(255*(1-l));}else if(l>.90){d[i+3]=Math.round(255*Math.max(0,(1-l)/.10));}else if((r-b)>10){d[i+3]=255;}else{d[i]=247;d[i+1]=245;d[i+2]=242;d[i+3]=255;}}x.putImageData(id,0,0);return c.toDataURL('image/png');}function init(){urls.white=bv(true);urls.mixed=bv(false);img.src=urls.white;window.__sfTextUrls=urls;}if(img.complete&&img.naturalWidth>0)init();else img.addEventListener('load',init);})();
+    const hdr=document.getElementById('siteHeader'),hero=document.getElementById('heroTop');
+    const upd=()=>{const p=window.scrollY>24||(hero&&hero.getBoundingClientRect().bottom<90);hdr.classList.toggle('scrolled',p);const t=document.getElementById('siteTextImg'),u=window.__sfTextUrls;if(t&&u&&u.white)t.src=p?u.mixed:u.white;};
+    upd();window.addEventListener('scroll',upd,{passive:true});window.addEventListener('resize',upd);
+  </script>
+</body>
+</html>
