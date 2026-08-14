@@ -89,16 +89,33 @@
       .footer-bottom { flex-direction: column; gap: 28px; text-align: center; }
       .footer-legal { flex-direction: column; gap: 10px; }
     }
+    
+    /* ── Wordmark: two pre-rendered variants, crossfaded on scroll ──
+       Previously both logos were recoloured in-page with a canvas, which
+       meant the raw dark-on-white PNGs flashed on every page load. */
+    .wordmark { position: relative; display: block; height: 32px; margin-left: -10px; margin-bottom: 4px; }
+    .wordmark .wm { height: 32px; width: auto; display: block; transition: opacity 240ms ease; }
+    .wordmark .wm-mixed { position: absolute; top: 0; left: 0; opacity: 0; }
+    header.scrolled .wordmark .wm-white { opacity: 0; }
+    header.scrolled .wordmark .wm-mixed { opacity: 1; }
+    /* No-anim: on a load that starts already scrolled (reload part-way down,
+       or a restored scroll position) the header would animate from its
+       unscrolled state, flashing the white wordmark before settling. The
+       class is set in the markup and dropped once the first state is applied. */
+    header.no-anim,
+    header.no-anim .wm,
+    header.no-anim .nav-link,
+    header.no-anim .nav-contact { transition: none !important; }
     </style>
   <link rel="icon" type="image/png" href="favicon.png" />
 </head>
 <body>
 
-  <header id="siteHeader" class="fixed inset-x-0 top-0 z-30">
+  <header id="siteHeader" class="fixed inset-x-0 top-0 z-30 no-anim">
     <nav class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
       <a href="index.html" class="flex items-end gap-0 hover:opacity-85 transition-opacity">
-        <img id="siteLogoImg" src="Brand_Assets/Brand/SF Logo.png" alt="Stud Finder logo" style="height:70px;width:auto;display:block;" />
-        <img id="siteTextImg" src="Brand_Assets/SF Text.png" alt="Stud Finder Construction" style="height:32px;width:auto;display:block;margin-left:-10px;margin-bottom:4px;" />
+        <img src="Brand_Assets/Brand/SF Logo White.png" alt="Stud Finder logo" style="height:70px;width:auto;display:block;" />
+        <span class="wordmark"><img src="Brand_Assets/SF Text White.png" alt="Stud Finder Construction" class="wm wm-white" /><img src="Brand_Assets/SF Text Mixed.png" alt="" aria-hidden="true" class="wm wm-mixed" /></span>
       </a>
       <div class="hidden gap-7 text-sm uppercase tracking-[0.22em] md:flex items-center">
         <a href="about.html"    class="nav-link">About</a>
@@ -194,12 +211,20 @@
   </footer>
 
   <script>
-    (function(){const img=document.getElementById('siteLogoImg');function p(){const c=document.createElement('canvas');c.width=img.naturalWidth;c.height=img.naturalHeight;const x=c.getContext('2d');x.drawImage(img,0,0);const d=x.getImageData(0,0,c.width,c.height);const px=d.data;for(let i=0;i<px.length;i+=4){const l=(px[i]*.299+px[i+1]*.587+px[i+2]*.114)/255;px[i]=247;px[i+1]=245;px[i+2]=242;px[i+3]=Math.round(255*(1-l));}x.putImageData(d,0,0);img.src=c.toDataURL('image/png');}if(img.complete&&img.naturalWidth>0)p();else img.addEventListener('load',p);})();
-    (function(){const img=document.getElementById('siteTextImg');const urls={white:'',mixed:''};function bv(aw){const c=document.createElement('canvas');c.width=img.naturalWidth;c.height=img.naturalHeight;const x=c.getContext('2d');x.drawImage(img,0,0);const id=x.getImageData(0,0,c.width,c.height);const d=id.data;for(let i=0;i<d.length;i+=4){const r=d[i],g=d[i+1],b=d[i+2],l=(r*.299+g*.587+b*.114)/255;if(aw){d[i]=247;d[i+1]=245;d[i+2]=242;d[i+3]=Math.round(255*(1-l));}else if(l>.90){d[i+3]=Math.round(255*Math.max(0,(1-l)/.10));}else if((r-b)>10){d[i+3]=255;}else{d[i]=247;d[i+1]=245;d[i+2]=242;d[i+3]=255;}}x.putImageData(id,0,0);return c.toDataURL('image/png');}function init(){urls.white=bv(true);urls.mixed=bv(false);img.src=urls.white;window.__sfTextUrls=urls;}if(img.complete&&img.naturalWidth>0)init();else img.addEventListener('load',init);})();
     const hdr=document.getElementById('siteHeader'),hero=document.getElementById('heroTop');
-    let textState=null,scrolled=false; // hysteresis, and only swap when the state changes
-    const upd=()=>{const y=window.scrollY,hp=hero&&hero.getBoundingClientRect().bottom<90;scrolled=hp||(scrolled?y>20:y>80);const p=scrolled;hdr.classList.toggle('scrolled',p);const t=document.getElementById('siteTextImg'),u=window.__sfTextUrls;if(t&&u&&u.white&&textState!==p){textState=p;t.src=p?u.mixed:u.white;}};
+    let scrolled=false; // hysteresis: engage at 80px, release at 20px
+    const upd=()=>{const y=window.scrollY,hp=hero&&hero.getBoundingClientRect().bottom<90;scrolled=hp||(scrolled?y>20:y>80);hdr.classList.toggle('scrolled',scrolled);};
     upd();window.addEventListener('scroll',upd,{passive:true});window.addEventListener('resize',upd);
   </script>
-</body>
+<script>
+      // Re-enable header transitions only after the initial scroll state has
+      // been applied, so the first paint can never crossfade the wordmark.
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          var h = document.getElementById('siteHeader');
+          if (h) h.classList.remove('no-anim');
+        });
+      });
+    </script>
+  </body>
 </html>
