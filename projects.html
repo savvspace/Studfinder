@@ -206,6 +206,54 @@
     header.no-anim .wm,
     header.no-anim .nav-link,
     header.no-anim .nav-contact { transition: none !important; }
+
+    /* ── Mobile menu ──────────────────────────────────────────────────────
+       The desktop nav is md:flex, so below 768px there was no navigation at
+       all. The burger and this overlay are the only nav a phone gets. */
+    #siteHeader { z-index: 50; }
+    .nav-burger {
+      display: none;
+      flex-direction: column; align-items: center; justify-content: center;
+      width: 44px; height: 44px;
+      padding: 0; border: 0; background: none;
+      color: #F7F5F2; cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    header.scrolled .nav-burger { color: var(--stone); }
+    .nav-burger span {
+      display: block; width: 24px; height: 2px;
+      background: currentColor;
+      transition: transform 240ms ease, opacity 160ms ease;
+    }
+    .nav-burger span + span { margin-top: 6px; }
+    .nav-burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+    .nav-burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+    .nav-burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+    .mobile-menu {
+      position: fixed; inset: 0; z-index: 40;
+      background: #000;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 36px;
+      opacity: 0; visibility: hidden;
+      transition: opacity 260ms ease, visibility 260ms ease;
+    }
+    .mobile-menu.open { opacity: 1; visibility: visible; }
+    .mobile-menu a {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: .28em;
+      color: var(--warm-white); text-decoration: none;
+    }
+    .mobile-menu a.is-current { color: var(--stone); }
+    .mobile-menu a.mm-contact {
+      border: 1px solid rgba(247,245,242,.55);
+      border-radius: 4px; padding: 13px 28px;
+      letter-spacing: .22em;
+    }
+    body.menu-open { overflow: hidden; }
+    @media (max-width: 767.98px) { .nav-burger { display: flex; } }
+    @media (min-width: 768px)    { .mobile-menu { display: none; } }
     </style>
     <link rel="icon" type="image/png" href="favicon.png" />
 </head>
@@ -224,8 +272,21 @@
           <a href="projects.html"       class="nav-link" style="color: var(--warm-white);">Projects</a>
           <a href="contact.html"      class="nav-link nav-contact">Contact</a>
         </div>
+        <button type="button" class="nav-burger" id="navBurger"
+                aria-expanded="false" aria-controls="mobileMenu" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
       </nav>
     </header>
+
+    <!-- Mobile menu (see .mobile-menu in the stylesheet) -->
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+      <a href="about.html">About</a>
+      <a href="services.html">Services</a>
+      <a href="projects.html" class="is-current">Projects</a>
+      <a href="contact.html" class="mm-contact">Contact</a>
+    </div>
+
 
     <!-- ── Hero ── -->
     <div id="heroTop" class="hero-section">
@@ -354,6 +415,39 @@
           if (h) h.classList.remove('no-anim');
         });
       });
+    </script>
+    <script>
+      // Mobile menu. The desktop nav is hidden below 768px, so without this
+      // a phone has no way to move around the site.
+      (function () {
+        var burger = document.getElementById('navBurger');
+        var menu   = document.getElementById('mobileMenu');
+        if (!burger || !menu) return;
+
+        function setOpen(open) {
+          burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+          burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+          menu.setAttribute('aria-hidden', open ? 'false' : 'true');
+          menu.classList.toggle('open', open);
+          document.body.classList.toggle('menu-open', open);
+        }
+
+        burger.addEventListener('click', function () {
+          setOpen(burger.getAttribute('aria-expanded') !== 'true');
+        });
+        // Tapping a destination closes the overlay behind it.
+        menu.addEventListener('click', function (e) {
+          if (e.target.closest('a')) setOpen(false);
+        });
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape') setOpen(false);
+        });
+        // Rotating to landscape can cross the breakpoint with the menu open,
+        // which would otherwise leave a black overlay stuck over the desktop nav.
+        window.addEventListener('resize', function () {
+          if (window.innerWidth >= 768) setOpen(false);
+        });
+      })();
     </script>
   </body>
 </html>
